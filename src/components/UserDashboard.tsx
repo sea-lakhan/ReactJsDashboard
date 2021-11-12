@@ -61,7 +61,7 @@ const useStyles = makeStyles({
     // backgroundColor: "rgba(0, 0, 0, 0.2)",
   },
   deleteIcon: { color: "white", fontSize: 20 },
-  infoButton: { backgroundColor: "#a7beae" },
+  infoButton: { backgroundColor: "  " },
 });
 
 export const UserDashboard = () => {
