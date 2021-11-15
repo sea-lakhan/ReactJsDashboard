@@ -14,11 +14,21 @@ import LanguageIcon from "@material-ui/icons/Language";
 import PhoneIcon from "@material-ui/icons/Phone";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import BusinessIcon from "@material-ui/icons/Business";
+import NoteIcon from "@material-ui/icons/Note";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 const useStyles = makeStyles({
+  menuButton: {
+    marginRight: 2,
+  },
+  title: {
+    flexGrow: 1,
+  },
   rootContainer: {
     display: "flex",
-    flex: 2,
-    height: "100%",
+    width: "100%",
     padding: 20,
     backgroundColor: "#cc313d",
     justifyContent: "center",
@@ -72,6 +82,7 @@ const useStyles = makeStyles({
   personalDetailsStyle: {
     margin: 5,
   },
+  infoButton: { backgroundColor: "#a7beae", alignSelf: "flex-start", justifySelf: "flex-start" },
 });
 export const UserDetails = () => {
   const styles = useStyles();
@@ -81,55 +92,71 @@ export const UserDetails = () => {
     navigation("/");
   };
   return (
-    <div className={styles.rootContainer}>
-      <div className={styles.userCard}>
-        <div className={styles.personalDetails}>
-          <AccountCircleIcon className={styles.userCircleIcon} />
-          <div className={styles.personDetailsContainer}>
-            <div className={styles.userDetailsStyle}>
-              Username:
-              <Chip className={styles.personalDetailsStyle} label={user.username} />
-            </div>
-            <div className={styles.userDetailsStyle}>
-              Name:
-              <Chip className={styles.personalDetailsStyle} label={user.name} />
-            </div>
-          </div>
-        </div>
-        <div className={styles.otherDetails}>
-          <div className={styles.contactDetails}>
-            <div className={styles.contactDetailsStyle}>
-              <EmailIcon className={styles.icon} />
-              <p>{user.email}</p>
-            </div>
-            <div className={styles.contactDetailsStyle}>
-              <LanguageIcon className={styles.icon} />
-              <p>{user.website}</p>
-            </div>
-            <div className={styles.contactDetailsStyle}>
-              <PhoneIcon className={styles.icon} />
-              <p>{user.phone}</p>
-            </div>
-            <div className={styles.contactDetailsStyle}>
-              <LocationOnIcon className={styles.icon} />
-              <p>{`${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`}</p>
+    <div className="container">
+      <Toolbar>
+        <IconButton edge="start" className={styles.menuButton} color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" className={styles.title}>
+          User Details
+        </Typography>
+        <Button onClick={handleBackClick} color="inherit">
+          Back
+        </Button>
+      </Toolbar>
+      <div className={styles.rootContainer}>
+        <div className={styles.userCard}>
+          <div className={styles.personalDetails}>
+            <AccountCircleIcon className={styles.userCircleIcon} />
+            <div className={styles.personDetailsContainer}>
+              <div className={styles.userDetailsStyle}>
+                Username:
+                <Chip className={styles.personalDetailsStyle} label={user.username} />
+              </div>
+              <div className={styles.userDetailsStyle}>
+                Name:
+                <Chip className={styles.personalDetailsStyle} label={user.name} />
+              </div>
             </div>
           </div>
-          <div className={styles.companyDetails}>
-            <h5>Company Details</h5>
-            <div className={styles.contactDetailsStyle}>
-              <BusinessIcon className={styles.icon} />
-              <p>{user.company.name}</p>
+          <div className={styles.otherDetails}>
+            <div className={styles.contactDetails}>
+              <div className={styles.contactDetailsStyle}>
+                <EmailIcon className={styles.icon} />
+                <p>{user.email}</p>
+              </div>
+              <div className={styles.contactDetailsStyle}>
+                <LanguageIcon className={styles.icon} />
+                <p>{user.website}</p>
+              </div>
+              <div className={styles.contactDetailsStyle}>
+                <PhoneIcon className={styles.icon} />
+                <p>{user.phone}</p>
+              </div>
+              <div className={styles.contactDetailsStyle}>
+                <LocationOnIcon className={styles.icon} />
+                <p>{`${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`}</p>
+              </div>
             </div>
-            <div className={styles.contactDetailsStyle}>
-              {/* <LocationOnIcon className={styles.icon} /> */}
-              <p>{user.company.catchPhrase}</p>
-            </div>
-            <div className={styles.contactDetailsStyle}>
-              {/* <LocationOnIcon className={styles.icon} /> */}
-              <p>{user.company.bs}</p>
+            <div className={styles.companyDetails}>
+              <h5>Company Details</h5>
+              <div className={styles.contactDetailsStyle}>
+                <BusinessIcon className={styles.icon} />
+                <p>{user.company.name}</p>
+              </div>
+              <div className={styles.contactDetailsStyle}>
+                <NoteIcon className={styles.icon} />
+                <p>{user.company.catchPhrase}</p>
+              </div>
+              <div className={styles.contactDetailsStyle}>
+                <NoteIcon className={styles.icon} />
+                <p>{user.company.bs}</p>
+              </div>
             </div>
           </div>
+          <Button className={styles.infoButton} onClick={handleBackClick} variant="contained">
+            Back
+          </Button>
         </div>
       </div>
     </div>

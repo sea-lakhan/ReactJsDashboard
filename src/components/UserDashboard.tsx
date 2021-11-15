@@ -13,8 +13,18 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserList, setUserDetails } from "../redux/userSlice";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles({
+  menuButton: {
+    marginRight: 2,
+  },
+  title: {
+    flexGrow: 1,
+  },
   rootContainer: {
     display: "flex",
     flex: 2,
@@ -61,7 +71,7 @@ const useStyles = makeStyles({
     // backgroundColor: "rgba(0, 0, 0, 0.2)",
   },
   deleteIcon: { color: "white", fontSize: 20 },
-  infoButton: { backgroundColor: "  " },
+  infoButton: { backgroundColor: "#a7beae" },
 });
 
 export const UserDashboard = () => {
@@ -71,16 +81,46 @@ export const UserDashboard = () => {
   const dispatch = useDispatch();
   //   const [userData, setUserData] = useState([]);
   useEffect(() => {
+    removeUser(4);
+    updateUser({
+      id: 5,
+      name: "akshay",
+      email: "akshay@gmail.com",
+      username: "akshay123",
+      password: "123456",
+    });
     if (user.userList.length == 0) {
-      axios.get("https://jsonplaceholder.typicode.com/users").then((response) => {
-        dispatch(addUserList(response.data));
-        //   setUserData(response.data);
-      });
+      axios
+        .get(" http://localhost:3006/users")
+        .then((response) => {
+          dispatch(addUserList(response.data));
+          //   setUserData(response.data);
+        })
+        .catch((error) => console.error());
     }
   }, []);
 
+  const addUser = () => {
+    const response = axios.post("http://localhost:3006/users", {
+      name: "sakshi1",
+      email: "sakshi1@gmail.com",
+      username: "sakshis",
+      password: "123456",
+    });
+    console.log(response);
+  };
+
+  const removeUser = async (id: number) => {
+    await axios.delete(`http://localhost:3006/users/${id}`);
+  };
+
+  const updateUser = async (user: any) => {
+    const response = await axios.put(`http://localhost:3006/users/${user.id}`, user);
+  };
+
   const deleteUser = (id: number) => {
-    dispatch(addUserList(user.userList.filter((user: any) => user.id != id)));
+    removeUser(id);
+    dispatch(addUserList(user.userList.filter((user: any) => user.id !== id)));
     // setUserData(userData.filter((user: any) => user.id != id));
   };
 
@@ -89,42 +129,54 @@ export const UserDashboard = () => {
     navigation("/UserDetails");
   };
   return (
-    <div className={styles.rootContainer}>
-      <Grid container className={styles.root} spacing={2}>
-        <Grid item xs={12}>
-          <Grid container justifyContent="center" spacing={6}>
-            {user.userList &&
-              user.userList.map((user: any) => (
-                <Grid key={user.id} item>
-                  <Card className={styles.cardStyle}>
-                    <div className={styles.root}>
-                      <div className={styles.userDetailsContainer}>
-                        <AccountCircleIcon className={styles.userCircleIcon} />
-                        <div className={styles.userCardStyle}>
-                          <Typography className={styles.cardTitle}>{user.username}</Typography>
-                          <Typography className={styles.cardTitle}>{user.name}</Typography>
-                          <Typography className={styles.cardTitle}>{user.email}</Typography>
+    <div className="container">
+      {/* <AppBar position="static"> */}
+      <Toolbar>
+        <IconButton edge="start" className={styles.menuButton} color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Typography variant="h6" className={styles.title}>
+          User Dashboard
+        </Typography>
+      </Toolbar>
+      {/* </AppBar> */}
+      <div className={styles.rootContainer}>
+        <Grid container className={styles.root} spacing={2}>
+          <Grid item xs={12}>
+            <Grid container justifyContent="center" spacing={6}>
+              {user.userList &&
+                user.userList.map((user: any) => (
+                  <Grid key={user.id} item>
+                    <Card className={styles.cardStyle}>
+                      <div className={styles.root}>
+                        <div className={styles.userDetailsContainer}>
+                          <AccountCircleIcon className={styles.userCircleIcon} />
+                          <div className={styles.userCardStyle}>
+                            <Typography className={styles.cardTitle}>{user.username}</Typography>
+                            <Typography className={styles.cardTitle}>{user.name}</Typography>
+                            <Typography className={styles.cardTitle}>{user.email}</Typography>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <CardActions>
-                      <div className={styles.buttonsContainer}>
-                        <Button className={styles.infoButton} onClick={() => handleNavigation(user)} variant="contained">
-                          More Info....
-                        </Button>
-                        {/* <Button onClick={() => deleteUser(user.id)}>
+                      <CardActions>
+                        <div className={styles.buttonsContainer}>
+                          <Button className={styles.infoButton} onClick={() => handleNavigation(user)} variant="contained">
+                            More Info....
+                          </Button>
+                          {/* <Button onClick={() => deleteUser(user.id)}>
                           <DeleteIcon className={styles.deleteIcon} />
                         </Button> */}
 
-                        <Chip avatar={<DeleteIcon className={styles.deleteIcon} />} label="Delete" onClick={() => deleteUser(user.id)} />
-                      </div>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
+                          <Chip avatar={<DeleteIcon className={styles.deleteIcon} />} label="Delete" onClick={() => deleteUser(user.id)} />
+                        </div>
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
+      </div>
     </div>
   );
 };
