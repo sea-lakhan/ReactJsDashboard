@@ -89,21 +89,10 @@ export const UserDetails = () => {
   const user = useSelector((state: any) => state.user.selectedUser);
   const navigation = useNavigate();
   const handleBackClick = () => {
-    navigation("/");
+    navigation("/userDashboard");
   };
   return (
     <div className="container">
-      <Toolbar>
-        <IconButton edge="start" className={styles.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" className={styles.title}>
-          User Details
-        </Typography>
-        <Button onClick={handleBackClick} color="inherit">
-          Back
-        </Button>
-      </Toolbar>
       <div className={styles.rootContainer}>
         <div className={styles.userCard}>
           <div className={styles.personalDetails}>

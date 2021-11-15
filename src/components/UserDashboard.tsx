@@ -13,10 +13,6 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserList, setUserDetails } from "../redux/userSlice";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles({
   menuButton: {
@@ -81,14 +77,13 @@ export const UserDashboard = () => {
   const dispatch = useDispatch();
   //   const [userData, setUserData] = useState([]);
   useEffect(() => {
-    removeUser(4);
-    updateUser({
-      id: 5,
-      name: "akshay",
-      email: "akshay@gmail.com",
-      username: "akshay123",
-      password: "123456",
-    });
+    // updateUser({
+    //   id: 5,
+    //   name: "akshay",
+    //   email: "akshay@gmail.com",
+    //   username: "akshay123",
+    //   password: "123456",
+    // });
     if (user.userList.length == 0) {
       axios
         .get(" http://localhost:3006/users")
@@ -100,16 +95,6 @@ export const UserDashboard = () => {
     }
   }, []);
 
-  const addUser = () => {
-    const response = axios.post("http://localhost:3006/users", {
-      name: "sakshi1",
-      email: "sakshi1@gmail.com",
-      username: "sakshis",
-      password: "123456",
-    });
-    console.log(response);
-  };
-
   const removeUser = async (id: number) => {
     await axios.delete(`http://localhost:3006/users/${id}`);
   };
@@ -118,28 +103,18 @@ export const UserDashboard = () => {
     const response = await axios.put(`http://localhost:3006/users/${user.id}`, user);
   };
 
-  const deleteUser = (id: number) => {
-    removeUser(id);
+  const deleteUser = async (id: number) => {
+    await removeUser(id);
     dispatch(addUserList(user.userList.filter((user: any) => user.id !== id)));
     // setUserData(userData.filter((user: any) => user.id != id));
   };
 
   const handleNavigation = (user: any) => {
     dispatch(setUserDetails(user));
-    navigation("/UserDetails");
+    navigation("/userDetails");
   };
   return (
     <div className="container">
-      {/* <AppBar position="static"> */}
-      <Toolbar>
-        <IconButton edge="start" className={styles.menuButton} color="inherit" aria-label="menu">
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" className={styles.title}>
-          User Dashboard
-        </Typography>
-      </Toolbar>
-      {/* </AppBar> */}
       <div className={styles.rootContainer}>
         <Grid container className={styles.root} spacing={2}>
           <Grid item xs={12}>

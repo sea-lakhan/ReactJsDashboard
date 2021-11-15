@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  flexgrow: 1;
 }
 
 .App-logo {
@@ -8,7 +9,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo { 
+  .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
@@ -38,5 +39,38 @@
 }
 
 .container {
-  height: 60rem;
+  height: 50rem;
+  flex-grow: 1;
+}
+
+.signupContainer {
+  display: flex;
+  flex: 1;
+  height: 50rem;
+  flex-direction: column;
+  padding: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.detailsContainer {
+  display: flex;
+  width: 40rem;
+  height: 30rem;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 5px;
+}
+
+.formfields {
+  display: flex;
+  width: 40rem;
+  height: 30rem;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 5px;
 }
