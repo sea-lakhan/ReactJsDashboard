@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import Chip from "@material-ui/core/Chip";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
     flex: 2,
     height: "100%",
     padding: 20,
-    backgroundColor: "#cc313d",
+    // backgroundColor: "#cc313d",
   },
   root: {
     flexGrow: 1,
@@ -37,6 +36,7 @@ const useStyles = makeStyles({
     minWidth: 275,
     display: "flex",
     flexDirection: "column",
+    backgroundColor: "#cc313d",
     // justifyContent: "space-between",
   },
   userCardStyle: {
@@ -47,16 +47,19 @@ const useStyles = makeStyles({
   },
   userDetailsContainer: {
     display: "flex",
+    justifyContent: "flex-start",
     alignItems: "center",
+    textAlign: "left",
     paddingLeft: 20,
   },
   cardTitle: {
     fontSize: 14,
+    color: "#ffffff",
   },
   pos: {
     marginBottom: 12,
   },
-  userCircleIcon: { color: "#a7beae", fontSize: 50 },
+  userCircleIcon: { color: "#ffffff", fontSize: 50 },
   buttonsContainer: {
     display: "flex",
     flex: 1,
@@ -66,8 +69,9 @@ const useStyles = makeStyles({
     padding: 10,
     // backgroundColor: "rgba(0, 0, 0, 0.2)",
   },
-  deleteIcon: { color: "white", fontSize: 20 },
-  infoButton: { backgroundColor: "#a7beae" },
+  deleteIcon: { color: "#ffffff", fontSize: 20 },
+  infoButton: { backgroundColor: "#ffffff" },
+  chipStyle: { backgroundColor: "#ffffff" },
 });
 
 export const UserDashboard = () => {
@@ -77,42 +81,43 @@ export const UserDashboard = () => {
   const dispatch = useDispatch();
   //   const [userData, setUserData] = useState([]);
   useEffect(() => {
-    // updateUser({
-    //   id: 5,
-    //   name: "akshay",
-    //   email: "akshay@gmail.com",
-    //   username: "akshay123",
-    //   password: "123456",
-    // });
-    if (user.userList.length == 0) {
-      axios
-        .get(" http://localhost:3006/users")
-        .then((response) => {
-          dispatch(addUserList(response.data));
-          //   setUserData(response.data);
-        })
-        .catch((error) => console.error());
-    }
+    axios
+      .get(" http://localhost:3006/users")
+      .then((response) => {
+        dispatch(addUserList(response.data));
+        //   setUserData(response.data);
+      })
+      .catch((error) => console.error());
   }, []);
 
   const removeUser = async (id: number) => {
-    await axios.delete(`http://localhost:3006/users/${id}`);
+    await axios
+      .delete(`http://localhost:3006/users/${id}`)
+      .then((response) => {
+        console.log(response.status);
+        if (response.status == 200) {
+          alert("User deleted successfully.");
+        }
+      })
+      .catch((error) => {
+        alert(error);
+      });
   };
 
-  const updateUser = async (user: any) => {
-    const response = await axios.put(`http://localhost:3006/users/${user.id}`, user);
-  };
+  // const updateUser = async (user: any) => {
+  //   const response = await axios.put(`http://localhost:3006/users/${user.id}`, user);
+  // };
 
   const deleteUser = async (id: number) => {
     await removeUser(id);
     dispatch(addUserList(user.userList.filter((user: any) => user.id !== id)));
-    // setUserData(userData.filter((user: any) => user.id != id));
   };
 
   const handleNavigation = (user: any) => {
     dispatch(setUserDetails(user));
     navigation("/userDetails");
   };
+
   return (
     <div className="container">
       <div className={styles.rootContainer}>
@@ -142,7 +147,12 @@ export const UserDashboard = () => {
                           <DeleteIcon className={styles.deleteIcon} />
                         </Button> */}
 
-                          <Chip avatar={<DeleteIcon className={styles.deleteIcon} />} label="Delete" onClick={() => deleteUser(user.id)} />
+                          <Chip
+                            className={styles.chipStyle}
+                            avatar={<DeleteIcon className={styles.deleteIcon} />}
+                            label="Delete"
+                            onClick={() => deleteUser(user.id)}
+                          />
                         </div>
                       </CardActions>
                     </Card>

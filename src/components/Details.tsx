@@ -20,15 +20,21 @@ export const Details = (props: any) => {
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const styles = useStyle();
-  console.log(user);
-  const handleClick = () => {
-    const response = axios.post("http://localhost:3006/users", user);
-    dispatch(removeUser());
-    navigation("/userDashboard");
+
+  const handleClick = async () => {
+    // const response =
+    await axios
+      .post("http://localhost:3006/users", user)
+      .then((response) => {
+        dispatch(removeUser());
+      })
+      .catch((error) => alert(error));
+    navigation(-2);
   };
 
   const handleBackClick = () => {
-    navigation("..");
+    // navigation("/addUser");
+    navigation(-1);
   };
 
   return (

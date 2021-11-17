@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     display: "flex",
     width: "100%",
     padding: 20,
-    backgroundColor: "#cc313d",
+    // backgroundColor: "#cc313d",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     padding: 10,
     borderRadius: 20,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#cc313d",
   },
   personalDetails: {
     display: "flex",
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
   },
-  userCircleIcon: { color: "#a7beae", fontSize: 60 },
+  userCircleIcon: { color: "#ffffff", fontSize: 60 },
   personDetailsContainer: {
     display: "flex",
   },
@@ -73,7 +73,7 @@ const useStyles = makeStyles({
   },
   icon: {
     fontSize: 25,
-    color: "#a7beae",
+    color: "#ffffff",
   },
   contactDetailsStyle: {
     display: "flex",
@@ -81,15 +81,17 @@ const useStyles = makeStyles({
   },
   personalDetailsStyle: {
     margin: 5,
+    backgroundColor: "#ffffff",
   },
-  infoButton: { backgroundColor: "#a7beae", alignSelf: "flex-start", justifySelf: "flex-start" },
+  infoStyle: { color: "#ffffff" },
+  infoButton: { backgroundColor: "#ffffff", alignSelf: "flex-start", justifySelf: "flex-start" },
 });
 export const UserDetails = () => {
   const styles = useStyles();
   const user = useSelector((state: any) => state.user.selectedUser);
   const navigation = useNavigate();
   const handleBackClick = () => {
-    navigation("/userDashboard");
+    navigation(-1);
   };
   return (
     <div className="container">
@@ -98,11 +100,11 @@ export const UserDetails = () => {
           <div className={styles.personalDetails}>
             <AccountCircleIcon className={styles.userCircleIcon} />
             <div className={styles.personDetailsContainer}>
-              <div className={styles.userDetailsStyle}>
+              <div className={(styles.userDetailsStyle, styles.infoStyle)}>
                 Username:
                 <Chip className={styles.personalDetailsStyle} label={user.username} />
               </div>
-              <div className={styles.userDetailsStyle}>
+              <div className={(styles.userDetailsStyle, styles.infoStyle)}>
                 Name:
                 <Chip className={styles.personalDetailsStyle} label={user.name} />
               </div>
@@ -112,34 +114,34 @@ export const UserDetails = () => {
             <div className={styles.contactDetails}>
               <div className={styles.contactDetailsStyle}>
                 <EmailIcon className={styles.icon} />
-                <p>{user.email}</p>
+                <p className={styles.infoStyle}>{user.email}</p>
               </div>
               <div className={styles.contactDetailsStyle}>
                 <LanguageIcon className={styles.icon} />
-                <p>{user.website}</p>
+                <p className={styles.infoStyle}>{user.website}</p>
               </div>
               <div className={styles.contactDetailsStyle}>
                 <PhoneIcon className={styles.icon} />
-                <p>{user.phone}</p>
+                <p className={styles.infoStyle}>{user.phone}</p>
               </div>
               <div className={styles.contactDetailsStyle}>
                 <LocationOnIcon className={styles.icon} />
-                <p>{`${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`}</p>
+                <p className={styles.infoStyle}>{`${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`}</p>
               </div>
             </div>
             <div className={styles.companyDetails}>
-              <h5>Company Details</h5>
+              <h5 className={styles.infoStyle}>Company Details</h5>
               <div className={styles.contactDetailsStyle}>
                 <BusinessIcon className={styles.icon} />
-                <p>{user.company.name}</p>
+                <p className={styles.infoStyle}>{user.company.name}</p>
               </div>
               <div className={styles.contactDetailsStyle}>
                 <NoteIcon className={styles.icon} />
-                <p>{user.company.catchPhrase}</p>
+                <p className={styles.infoStyle}>{user.company.catchPhrase}</p>
               </div>
               <div className={styles.contactDetailsStyle}>
                 <NoteIcon className={styles.icon} />
-                <p>{user.company.bs}</p>
+                <p className={styles.infoStyle}>{user.company.bs}</p>
               </div>
             </div>
           </div>

@@ -37,12 +37,12 @@ export const Header = () => {
   };
 
   const handleAddUserClick = () => {
-    navigation("/");
+    navigation("/addUser");
     handleClose();
   };
 
   const handleUserDashboardClick = () => {
-    navigation("/userDashboard");
+    navigation("/");
     handleClose();
   };
 

@@ -106,49 +106,51 @@ export const Signup = () => {
   };
 
   return (
-    <div className="signupContainer">
-      <div className="formfields">
-        <h1 className={styles.heading}>Sign Up</h1>
-        <TextField
-          value={user.name}
-          className={styles.textField}
-          onChange={(e) => handleChange(e.target.value, "name")}
-          id="outlined-basic"
-          label="Name"
-          variant="outlined"
-        />
-        <TextField
-          value={user.email}
-          className={styles.textField}
-          onChange={(e) => handleChange(e.target.value, "email")}
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-        />
-        <div className={styles.credentialContainer}>
+    <div className="container">
+      <div className="signupContainer">
+        <div className="formfields">
+          <h1 className={styles.heading}>Sign Up</h1>
           <TextField
-            value={user.username}
-            className={styles.credentialTextFields}
-            onChange={(e) => handleChange(e.target.value, "username")}
+            value={user.name}
+            className={styles.textField}
+            onChange={(e) => handleChange(e.target.value, "name")}
             id="outlined-basic"
-            label="Username"
+            label="Name"
             variant="outlined"
           />
           <TextField
-            value={user.password}
-            type="password"
-            className={styles.credentialTextFields}
-            onChange={(e) => handleChange(e.target.value, "password")}
+            value={user.email}
+            className={styles.textField}
+            onChange={(e) => handleChange(e.target.value, "email")}
             id="outlined-basic"
-            label="Password"
+            label="Email"
             variant="outlined"
           />
+          <div className={styles.credentialContainer}>
+            <TextField
+              value={user.username}
+              className={styles.credentialTextFields}
+              onChange={(e) => handleChange(e.target.value, "username")}
+              id="outlined-basic"
+              label="Username"
+              variant="outlined"
+            />
+            <TextField
+              value={user.password}
+              type="password"
+              className={styles.credentialTextFields}
+              onChange={(e) => handleChange(e.target.value, "password")}
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
+            />
+          </div>
+          {/* <Link style={{ width:"100%", marginTop:10,height:"3rem", font}} to={{pathname:'/details'}}> */}
+          <Button onClick={handleClick} className={styles.button} variant="contained" color="primary">
+            Submit
+          </Button>
+          {/* </Link> */}
         </div>
-        {/* <Link style={{ width:"100%", marginTop:10,height:"3rem", font}} to={{pathname:'/details'}}> */}
-        <Button onClick={handleClick} className={styles.button} variant="contained" color="primary">
-          Submit
-        </Button>
-        {/* </Link> */}
       </div>
     </div>
   );

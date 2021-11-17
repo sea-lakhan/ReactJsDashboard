@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  flexgrow: 1;
+  min-height: 100%;
 }
 
 .App-logo {
@@ -39,24 +39,34 @@
 }
 
 .container {
-  height: 50rem;
-  flex-grow: 1;
+  /* display: flex; */
+  height: 100%;
+  min-height: 100%;
+  /* flexgrow: 1; */
+}
+
+body:before {
+  content: "";
+  height: 100%;
+  float: left;
+  width: 0;
+  margin-top: -32767px;
+  /* thank you Erik J - negate effect of float*/
 }
 
 .signupContainer {
   display: flex;
-  flex: 1;
-  height: 50rem;
+  min-height: 100%;
   flex-direction: column;
   padding: 2rem;
   justify-content: center;
   align-items: center;
+  background-color: "#cc313d";
 }
 
 .detailsContainer {
   display: flex;
-  width: 40rem;
-  height: 30rem;
+  min-height: 100%;
   flex: 1;
   flex-direction: column;
   justify-content: center;
@@ -66,11 +76,12 @@
 
 .formfields {
   display: flex;
-  width: 40rem;
-  height: 30rem;
+  /* width: 40rem; */
+  /* height: 30rem; */
   flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 5px;
+  background-color: "#cc313d";
 }
