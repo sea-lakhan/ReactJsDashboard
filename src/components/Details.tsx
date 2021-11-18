@@ -8,7 +8,7 @@ import { makeStyles } from "@material-ui/core";
 import { RootState } from "../redux/store";
 import axios from "axios";
 import { User } from "./Signup";
-import { removeUser } from "../redux/userSlice";
+import { resetSelectedUser } from "../redux/userSlice";
 
 const useStyle = makeStyles({
   heading: { display: "flex", color: "#898989", marginBottom: 5 },
@@ -16,7 +16,7 @@ const useStyle = makeStyles({
 });
 
 export const Details = (props: any) => {
-  const user = useSelector<RootState, User | any>((state: RootState) => state.user.selectedUser);
+  const user = useSelector<RootState, User>((state: any) => state.user.selectedUser);
   const dispatch = useDispatch();
   const navigation = useNavigate();
   const styles = useStyle();
@@ -26,7 +26,7 @@ export const Details = (props: any) => {
     await axios
       .post("http://localhost:3006/users", user)
       .then((response) => {
-        dispatch(removeUser());
+        dispatch(resetSelectedUser());
       })
       .catch((error) => alert(error));
     navigation(-2);

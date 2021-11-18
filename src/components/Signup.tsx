@@ -31,6 +31,7 @@ type Company = {
 };
 
 export type User = {
+  id?: number;
   name: string;
   email: string;
   username: string;
@@ -66,25 +67,11 @@ export const Signup = () => {
   // const[username, setUsername]=useState('');
   // const[password, setPassword]=useState('');
 
-  const handleChange = (value: string, type: string) => {
-    switch (type) {
-      case "name":
-        // setName(value)
-        setUser({ ...user, name: value });
-        break;
-      case "email":
-        // setEmail(value)
-        setUser({ ...user, email: value });
-        break;
-      case "username":
-        // setUsername(value)
-        setUser({ ...user, username: value });
-        break;
-      case "password":
-        // setPassword(value)
-        setUser({ ...user, password: value });
-        break;
-    }
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
   };
 
   useEffect(() => {
@@ -112,16 +99,18 @@ export const Signup = () => {
           <h1 className={styles.heading}>Sign Up</h1>
           <TextField
             value={user.name}
+            name="name"
             className={styles.textField}
-            onChange={(e) => handleChange(e.target.value, "name")}
+            onChange={handleChange}
             id="outlined-basic"
             label="Name"
             variant="outlined"
           />
           <TextField
             value={user.email}
+            name="email"
             className={styles.textField}
-            onChange={(e) => handleChange(e.target.value, "email")}
+            onChange={handleChange}
             id="outlined-basic"
             label="Email"
             variant="outlined"
@@ -129,17 +118,19 @@ export const Signup = () => {
           <div className={styles.credentialContainer}>
             <TextField
               value={user.username}
+              name="username"
               className={styles.credentialTextFields}
-              onChange={(e) => handleChange(e.target.value, "username")}
+              onChange={handleChange}
               id="outlined-basic"
               label="Username"
               variant="outlined"
             />
             <TextField
               value={user.password}
+              name="password"
               type="password"
               className={styles.credentialTextFields}
-              onChange={(e) => handleChange(e.target.value, "password")}
+              onChange={handleChange}
               id="outlined-basic"
               label="Password"
               variant="outlined"

@@ -7,7 +7,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Chip, Grid } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import LanguageIcon from "@material-ui/icons/Language";
@@ -19,6 +19,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
+import { User } from "./Signup";
+import { RootState } from "../redux/store";
+import { resetSelectedUser } from "../redux/userSlice";
 const useStyles = makeStyles({
   menuButton: {
     marginRight: 2,
@@ -88,9 +91,12 @@ const useStyles = makeStyles({
 });
 export const UserDetails = () => {
   const styles = useStyles();
-  const user = useSelector((state: any) => state.user.selectedUser);
+  const user = useSelector<RootState, User | any>((state: RootState) => state.user.selectedUser);
   const navigation = useNavigate();
+  const dispatch = useDispatch();
+
   const handleBackClick = () => {
+    dispatch(resetSelectedUser());
     navigation(-1);
   };
   return (

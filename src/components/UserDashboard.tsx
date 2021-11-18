@@ -12,6 +12,8 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserList, setUserDetails } from "../redux/userSlice";
+import { User } from "./Signup";
+import { RootState } from "../redux/store";
 
 const useStyles = makeStyles({
   menuButton: {
@@ -77,7 +79,7 @@ const useStyles = makeStyles({
 export const UserDashboard = () => {
   const styles = useStyles();
   const navigation = useNavigate();
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector<RootState, { userList: User[]; selectedUser: User }>((state: any) => state.user);
   const dispatch = useDispatch();
   //   const [userData, setUserData] = useState([]);
   useEffect(() => {
@@ -113,7 +115,7 @@ export const UserDashboard = () => {
     dispatch(addUserList(user.userList.filter((user: any) => user.id !== id)));
   };
 
-  const handleNavigation = (user: any) => {
+  const handleNavigation = (user: User) => {
     dispatch(setUserDetails(user));
     navigation("/userDetails");
   };
@@ -125,7 +127,7 @@ export const UserDashboard = () => {
           <Grid item xs={12}>
             <Grid container justifyContent="center" spacing={6}>
               {user.userList &&
-                user.userList.map((user: any) => (
+                user.userList.map((user: User) => (
                   <Grid key={user.id} item>
                     <Card className={styles.cardStyle}>
                       <div className={styles.root}>
@@ -151,7 +153,7 @@ export const UserDashboard = () => {
                             className={styles.chipStyle}
                             avatar={<DeleteIcon className={styles.deleteIcon} />}
                             label="Delete"
-                            onClick={() => deleteUser(user.id)}
+                            onClick={() => deleteUser(Number(user.id))}
                           />
                         </div>
                       </CardActions>

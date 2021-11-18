@@ -26,13 +26,13 @@ export const userSlice = createSlice({
     setUserDetails: (state, action: PayloadAction<any>) => {
       state.selectedUser = action.payload;
     },
-    removeUser: (state) => {
+    resetSelectedUser: (state) => {
       state.selectedUser = initialState.selectedUser;
     },
   },
 });
 
-export const { addUserList, setUserDetails, removeUser } = userSlice.actions;
+export const { addUserList, setUserDetails, resetSelectedUser } = userSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 // export const selectUser = (state: RootState) => state.user;

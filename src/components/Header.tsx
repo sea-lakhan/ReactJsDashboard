@@ -7,7 +7,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import { Navigation } from "@material-ui/icons";
 import { useNavigate } from "react-router";
-import { removeUser } from "../redux/userSlice";
+import { resetSelectedUser } from "../redux/userSlice";
 import { useDispatch } from "react-redux";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -29,7 +29,7 @@ export const Header = () => {
 
   const handleClick = () => {
     navigation("/");
-    dispatch(removeUser());
+    dispatch(resetSelectedUser());
   };
 
   const handleMenu = (event: any) => {
