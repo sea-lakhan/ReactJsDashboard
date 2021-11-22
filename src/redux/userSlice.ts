@@ -1,18 +1,34 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "../components/Signup";
 import type { RootState } from "./store";
 
-// Define a type for the slice state
 interface UserState {
-  name: string;
-  email: string;
-  username: string;
-  password: string;
+  userList: User[];
+  selectedUser: User;
 }
 
 // Define the initial state using that type
-export const initialState = {
+export const initialState: UserState = {
   userList: [],
-  selectedUser: {},
+  selectedUser: {
+    name: "",
+    username: "",
+    email: "",
+    password: "",
+    address: {
+      street: "",
+      suite: "",
+      city: "",
+      zipcode: 0,
+    },
+    phone: "",
+    website: "",
+    company: {
+      name: "",
+      catchPhrase: "",
+      bs: "",
+    },
+  },
 };
 
 export const userSlice = createSlice({
@@ -20,10 +36,10 @@ export const userSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    addUserList: (state, action: PayloadAction<any>) => {
+    addUserList: (state, action: PayloadAction<User[]>) => {
       state.userList = action.payload;
     },
-    setUserDetails: (state, action: PayloadAction<any>) => {
+    setUserDetails: (state, action: PayloadAction<User>) => {
       state.selectedUser = action.payload;
     },
     resetSelectedUser: (state) => {

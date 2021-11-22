@@ -43,7 +43,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     padding: 10,
     borderRadius: 20,
-    backgroundColor: "#cc313d",
+    backgroundColor: "#3caea3",
   },
   personalDetails: {
     display: "flex",
@@ -132,7 +132,7 @@ export const UserDetails = () => {
               </div>
               <div className={styles.contactDetailsStyle}>
                 <LocationOnIcon className={styles.icon} />
-                <p className={styles.infoStyle}>{`${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}`}</p>
+                <p className={styles.infoStyle}>{(user.address.street, user.address.suite, user.address.city, user.address.zipcode)}</p>
               </div>
             </div>
             <div className={styles.companyDetails}>

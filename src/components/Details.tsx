@@ -38,18 +38,20 @@ export const Details = (props: any) => {
   };
 
   return (
-    <div className="signupContainer">
-      <div className="detailsContainer">
-        <h2 className={styles.heading}>User Details</h2>
-        <h3>Name:{user.name}</h3>
-        <h3>Email:{user.email}</h3>
-        <h3>Username:{user.username}</h3>
-        <Button className={styles.button} onClick={handleBackClick} variant="contained" color="primary">
-          Back
-        </Button>
-        <Button className={styles.button} onClick={handleClick} variant="contained" color="primary">
-          Submit
-        </Button>
+    <div className="container">
+      <div className="signupContainer">
+        <div className="detailsContainer">
+          <h2 className={styles.heading}>User Details</h2>
+          <h3>Name:{user.name}</h3>
+          <h3>Email:{user.email}</h3>
+          <h3>Username:{user.username}</h3>
+          <Button className={styles.button} onClick={handleBackClick} variant="contained" color="primary">
+            Back
+          </Button>
+          <Button className={styles.button} onClick={handleClick} variant="contained" color="primary">
+            Submit
+          </Button>
+        </div>
       </div>
     </div>
   );

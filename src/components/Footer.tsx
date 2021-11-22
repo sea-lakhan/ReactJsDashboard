@@ -9,8 +9,8 @@ const useStyle = makeStyles({
     color: "white",
   },
   footer: {
-    position: "absolute",
-    bottom: 0,
+    // position: "absolute",
+    // bottom: 0,
     left: 0,
     right: 0,
     marginBottom: 20,

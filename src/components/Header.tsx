@@ -33,6 +33,7 @@ export const Header = () => {
   };
 
   const handleMenu = (event: any) => {
+    console.log(event.currentTarget);
     setToggleMenu(event.currentTarget);
   };
 

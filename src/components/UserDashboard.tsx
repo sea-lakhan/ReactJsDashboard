@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     minWidth: 275,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#cc313d",
+    backgroundColor: "#3caea3",
     // justifyContent: "space-between",
   },
   userCardStyle: {
