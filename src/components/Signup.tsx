@@ -1,27 +1,27 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import MomentUtils from "@date-io/moment";
+import ClearIcon from "@material-ui/icons/Clear";
+import { IconButton, InputAdornment } from "@material-ui/core";
+import { setUserDetails } from "../redux/userSlice";
 
-import { addUserList, initialState, setUserDetails } from "../redux/userSlice";
-import { StringLiteralLike } from "typescript";
 import { RootState } from "../redux/store";
-import {
-  AlphabetNumericValidation,
-  AlphabetValidation,
-  AlphaNumericWithUnderscoreValidation,
-  EmailValidation,
-  PasswordValidation,
-} from "../validation";
+import { AlphabetValidation, AlphaNumericWithUnderscoreValidation, EmailValidation, PasswordValidation } from "../validation";
 
 const useStyle = makeStyles({
-  heading: { display: "flex", color: "#898989" },
+  heading: { display: "flex", color: "#3caea3" },
   textField: { width: "100%", backgroundColor: "#ffffff", borderRadius: 10, marginTop: 10 },
-  credentialContainer: { display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center" },
+  credentialContainer: { display: "flex", width: "100%", justifyContent: "space-between", alignItems: "flex-start" },
   credentialTextFields: { width: "49%", backgroundColor: "#ffffff", borderRadius: 10, marginTop: 10 },
-  button: { width: "100%", marginTop: 5, height: "3rem" },
+  button: { width: "100%", marginTop: 5, height: "3rem", backgroundColor: "#3caea3", color: "#fff" },
+  errorMessage: { color: "#ff3300" },
+  dateContainer: { width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: 10 },
+  clearDateIcon: { marginRight: 10 },
 });
 
 export type Address = {
@@ -47,6 +47,7 @@ export interface User {
   phone: string;
   address: Address;
   company: Company;
+  dob: string;
 }
 
 const webmailInitialValue = "www.e-zest.com";
@@ -66,8 +67,8 @@ const companyInitialValue = {
 export const Signup = () => {
   const userFromRedux = useSelector<RootState, User | any>((state: RootState) => state.user.selectedUser);
   const dispatch = useDispatch();
-  const navigation = useNavigate();
-  // const [user, setUser] = useState({} as User);
+  const navigation = useHistory();
+  // const addressInputRef = useRef();
   const styles = useStyle();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -83,40 +84,12 @@ export const Signup = () => {
 
   const [credentialViewFlag, setCredentialViewFlag] = useState<boolean>(true);
   const [buttonDisableStatus, setButtonDisableStatus] = useState<boolean>(true);
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-  //   setUser({
-  //     ...user,
-  //     [e.target.name]: e.target.value,
-  //   });
-  // };
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   switch (e.target.name) {
-  //     case "name": {
-  //       console.log(AlphabetValidation.test(e.target.value), e.target.name);
-  //       setName(e.target.value);
-  //       break;
-  //     }
-  //     case "email": {
-  //       console.log(EmailValidation.test(e.target.value), e.target.name);
-  //       setEmail(e.target.value);
-  //       break;
-  //     }
-  //     case "username": {
-  //       console.log(AlphaNumericWithUnderscoreValidation.test(e.target.value), e.target.name);
-  //       setUsername(e.target.value);
-  //       break;
-  //     }
-  //     case "password": {
-  //       setPassword(e.target.value);
-  //       break;
-  //     }
-  //     case "confirmPassword": {
-  //       setConfirmPassword(e.target.value);
-  //       break;
-  //     }
-  //   }
-  // };
+  const [address, setAddress] = useState<string>("");
+  const [addressError, setAddressError] = useState<boolean>(false);
+  const [rowSize, setRowSize] = useState<number>(1);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [dateError, setDateError] = useState<boolean>(false);
+  // const [dateState, setDateState] = useState<boolean>(false);
 
   const handleNameChange = (name: string) => {
     setNameError(!AlphabetValidation.test(name));
@@ -133,12 +106,27 @@ export const Signup = () => {
     setUsername(username);
   };
   const handlePasswordChange = (password: string) => {
+    console.log(password, confirmPassword);
     setPasswordError(!PasswordValidation.test(password));
     setPassword(password);
   };
   const handleConfirmPasswordChange = (confirmPassword: string) => {
-    setConfirmPasswordError(!PasswordValidation.test(confirmPassword));
     setConfirmPassword(confirmPassword);
+  };
+
+  const handleAddressChange = (address: string) => {
+    setAddressError(!address);
+    setAddress(address);
+  };
+
+  const handleDateChange = (date: any | null) => {
+    console.log(date);
+    if (date === null || date === undefined || date.isValid()) {
+      setDateError(false);
+    } else if (!date.isValid()) {
+      setDateError(true);
+    }
+    setSelectedDate(date);
   };
 
   useEffect(() => {
@@ -150,6 +138,10 @@ export const Signup = () => {
   }, [username]);
 
   useEffect(() => {
+    setConfirmPasswordError(!(password.length === confirmPassword.length ? password === confirmPassword : password.startsWith(confirmPassword)));
+  }, [password, confirmPassword]);
+
+  useEffect(() => {
     console.log("from second use effect");
     if (!!userFromRedux.username && !!userFromRedux.name && !!userFromRedux.email && !!userFromRedux.password) {
       handleNameChange(userFromRedux.name);
@@ -157,6 +149,7 @@ export const Signup = () => {
       handleEmailChange(userFromRedux.email);
       handlePasswordChange(userFromRedux.password);
       handleConfirmPasswordChange(userFromRedux.password);
+      handleAddressChange(userFromRedux.address.street);
     }
     //  setUser(userFromRedux);
     // setUser({ ...user, website: webmailInitialValue, phone: phoneInitialValue, address: addressInitialValue, company: companyInitialValue });
@@ -164,7 +157,22 @@ export const Signup = () => {
 
   useEffect(() => {
     console.log("called third use effect");
-    if (!nameError && !emailError && !usernameError && !passwordError && !confirmPasswordError) {
+    if (
+      !!name &&
+      !nameError &&
+      !!email &&
+      !emailError &&
+      !!username &&
+      !usernameError &&
+      !!password &&
+      !passwordError &&
+      !!confirmPassword &&
+      !confirmPasswordError &&
+      !!address &&
+      !addressError &&
+      !!selectedDate &&
+      !dateError
+    ) {
       setButtonDisableStatus(false);
     } else {
       setButtonDisableStatus(true);
@@ -172,7 +180,8 @@ export const Signup = () => {
   });
 
   const handleClick = () => {
-    if (name && email && username && password && confirmPassword) {
+    console.log(selectedDate, selectedDate?.toUTCString());
+    if (name && email && username && password && confirmPassword && address) {
       dispatch(
         setUserDetails({
           name: name,
@@ -181,11 +190,12 @@ export const Signup = () => {
           password: password,
           website: webmailInitialValue,
           phone: phoneInitialValue,
-          address: addressInitialValue,
+          address: { ...addressInitialValue, street: address },
           company: companyInitialValue,
+          dob: String(selectedDate?.toString()),
         })
       );
-      navigation("/confirmDetails");
+      navigation.push("/confirmDetails");
     } else {
       alert("Please enter all the details");
     }
@@ -206,6 +216,7 @@ export const Signup = () => {
             label="Name"
             variant="outlined"
             required
+            helperText={nameError ? "Please enter only alphabets" : ""}
           />
           <TextField
             error={emailError}
@@ -217,6 +228,7 @@ export const Signup = () => {
             label="Email"
             variant="outlined"
             required
+            helperText={emailError ? "Please enter valid email id" : ""}
           />
           <TextField
             error={usernameError}
@@ -228,7 +240,8 @@ export const Signup = () => {
             id="outlined-basic"
             label="Username"
             variant="outlined"
-            required={credentialViewFlag}
+            required={!credentialViewFlag}
+            helperText={usernameError ? "Please enter only alphanumeric value" : ""}
           />
           <div className={styles.credentialContainer}>
             <TextField
@@ -242,7 +255,10 @@ export const Signup = () => {
               id="outlined-basic"
               label="Password"
               variant="outlined"
-              required={credentialViewFlag}
+              required={!credentialViewFlag}
+              helperText={
+                passwordError ? "Password must have 1 capital letter, 1 small letter, 1 digit, special character and 7 to 15 letters long" : ""
+              }
             />
             <TextField
               error={confirmPasswordError}
@@ -255,11 +271,56 @@ export const Signup = () => {
               id="outlined-basic"
               label="Confirm Password"
               variant="outlined"
-              required={credentialViewFlag}
+              required={!credentialViewFlag}
+              helperText={confirmPasswordError ? "Confirm password and password must be same" : ""}
             />
           </div>
+          <TextField
+            error={addressError}
+            value={address}
+            multiline
+            onFocus={() => setRowSize(4)}
+            onBlur={() => setRowSize(1)}
+            maxRows={rowSize}
+            name="Address"
+            className={styles.textField}
+            onChange={(e) => handleAddressChange(e.target.value)}
+            id="outlined-basic"
+            label="Address"
+            variant="outlined"
+            required
+            helperText={addressError ? "Please enter address" : ""}
+          />
+          <div className={styles.dateContainer}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <KeyboardDatePicker
+                autoOk
+                variant="inline"
+                inputVariant="outlined"
+                label="Date Of Birth"
+                format="DD/MM/yyyy"
+                value={selectedDate}
+                InputAdornmentProps={{ position: "start", style: { order: 2, marginLeft: 0 } }}
+                onChange={handleDateChange}
+                fullWidth
+                disableFuture
+                error={dateError}
+                invalidDateMessage=""
+                InputProps={{
+                  endAdornment: selectedDate != null && selectedDate != undefined && (
+                    <InputAdornment position="end">
+                      <IconButton className={styles.clearDateIcon} onClick={() => handleDateChange(null)}>
+                        <ClearIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                helperText={dateError ? "Please enter valid date" : ""}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
           {/* <Link style={{ width:"100%", marginTop:10,height:"3rem", font}} to={{pathname:'/details'}}> */}
-          <Button disabled={buttonDisableStatus} onClick={handleClick} className={styles.button} variant="contained" color="primary">
+          <Button disabled={buttonDisableStatus} onClick={handleClick} className={styles.button} variant="contained">
             Submit
           </Button>
           {/* </Link> */}

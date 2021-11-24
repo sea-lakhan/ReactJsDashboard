@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { useNavigate } from "react-router";
+import { useHistory } from "react-router";
 // import { selectUser } from "../redux_stuff/userSlicer";
 import { useDispatch, useSelector } from "react-redux";
 // import { removeUser } from "../redux_stuff/userSlicer";
@@ -11,14 +11,14 @@ import { User } from "./Signup";
 import { resetSelectedUser } from "../redux/userSlice";
 
 const useStyle = makeStyles({
-  heading: { display: "flex", color: "#898989", marginBottom: 5 },
-  button: { width: "100%", marginTop: 5, height: "3rem" },
+  heading: { display: "flex", color: "#3caea3", marginBottom: 5 },
+  button: { width: "100%", marginTop: 5, height: "3rem", backgroundColor: "#3caea3", color: "#fff" },
 });
 
 export const Details = (props: any) => {
   const user = useSelector<RootState, User>((state: any) => state.user.selectedUser);
   const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const navigation = useHistory();
   const styles = useStyle();
 
   const handleClick = async () => {
@@ -29,12 +29,12 @@ export const Details = (props: any) => {
         dispatch(resetSelectedUser());
       })
       .catch((error) => alert(error));
-    navigation(-2);
+    navigation.go(-2);
   };
 
   const handleBackClick = () => {
     // navigation("/addUser");
-    navigation(-1);
+    navigation.goBack();
   };
 
   return (

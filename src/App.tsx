@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import { UserDashboard } from "./components/UserDashboard";
 import { UserDetails } from "./components/UserDetails";
 import { Signup } from "./components/Signup";
@@ -11,12 +11,12 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Routes>
-        <Route path="/" element={<UserDashboard />} />
-        <Route path="/addUser" element={<Signup />} />
-        <Route path="/confirmDetails" element={<Details />} />
-        <Route path="/userDetails" element={<UserDetails />} />
-      </Routes>
+      <Switch>
+        <Route exact path="/" render={() => <UserDashboard />} />
+        <Route exact path="/addUser" render={() => <Signup />} />
+        <Route exact path="/confirmDetails" render={() => <Details />} />
+        <Route exact path="/userDetails" render={() => <UserDetails />} />
+      </Switch>
       <Footer />
     </div>
   );

@@ -1,14 +1,11 @@
-import React, { useState } from "react";
-import AppBar from "@material-ui/core/AppBar";
+import { useState } from "react";
+// import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import { Button, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
-import { Navigation } from "@material-ui/icons";
-import { useNavigate } from "react-router";
-import { resetSelectedUser } from "../redux/userSlice";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 
@@ -23,14 +20,8 @@ const useStyles = makeStyles({
 
 export const Header = () => {
   const styles = useStyles();
-  const dispatch = useDispatch();
-  const navigation = useNavigate();
+  const navigation = useHistory();
   const [toggleMenu, setToggleMenu] = useState(null);
-
-  const handleClick = () => {
-    navigation("/");
-    dispatch(resetSelectedUser());
-  };
 
   const handleMenu = (event: any) => {
     console.log(event.currentTarget);
@@ -38,12 +29,12 @@ export const Header = () => {
   };
 
   const handleAddUserClick = () => {
-    navigation("/addUser");
+    navigation.push("/addUser");
     handleClose();
   };
 
   const handleUserDashboardClick = () => {
-    navigation("/");
+    navigation.goBack();
     handleClose();
   };
 

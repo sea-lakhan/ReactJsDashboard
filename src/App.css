@@ -39,7 +39,9 @@
 }
 
 .container {
-  /* display: flex; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   min-height: 80vh;
   /* flexgrow: 1; */
@@ -57,7 +59,11 @@ body:before {
 .signupContainer {
   display: flex;
   min-height: 100%;
+  max-width: 50%;
+  min-width: 50%;
   flex-direction: column;
+  align-self: center;
+  justify-self: center;
   padding: 2rem;
   justify-content: center;
   align-items: center;
@@ -67,6 +73,8 @@ body:before {
 .detailsContainer {
   display: flex;
   min-height: 100%;
+  max-width: 100%;
+  min-width: 100%;
   flex: 1;
   flex-direction: column;
   justify-content: center;
@@ -78,6 +86,9 @@ body:before {
   display: flex;
   /* width: 40rem; */
   /* height: 30rem; */
+  min-height: 100%;
+  max-width: 100%;
+  min-width: 100%;
   flex: 1;
   flex-direction: column;
   justify-content: center;

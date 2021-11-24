@@ -1,27 +1,20 @@
-import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import { useNavigate } from "react-router";
+import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Avatar, Chip, Grid } from "@material-ui/core";
+import { Chip } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import LanguageIcon from "@material-ui/icons/Language";
 import PhoneIcon from "@material-ui/icons/Phone";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
 import BusinessIcon from "@material-ui/icons/Business";
 import NoteIcon from "@material-ui/icons/Note";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { User } from "./Signup";
 import { RootState } from "../redux/store";
 import { resetSelectedUser } from "../redux/userSlice";
+import moment from "moment";
+
 const useStyles = makeStyles({
   menuButton: {
     marginRight: 2,
@@ -92,12 +85,12 @@ const useStyles = makeStyles({
 export const UserDetails = () => {
   const styles = useStyles();
   const user = useSelector<RootState, User | any>((state: RootState) => state.user.selectedUser);
-  const navigation = useNavigate();
+  const navigation = useHistory();
   const dispatch = useDispatch();
 
   const handleBackClick = () => {
     dispatch(resetSelectedUser());
-    navigation(-1);
+    navigation.goBack();
   };
   return (
     <div className="container">
@@ -114,6 +107,12 @@ export const UserDetails = () => {
                 Name:
                 <Chip className={styles.personalDetailsStyle} label={user.name} />
               </div>
+              {user.dob && (
+                <div className={(styles.userDetailsStyle, styles.infoStyle)}>
+                  Date Of Birth:
+                  <Chip className={styles.personalDetailsStyle} label={moment(user.dob).format("DD MMM yyyy").toString()} />
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.otherDetails}>

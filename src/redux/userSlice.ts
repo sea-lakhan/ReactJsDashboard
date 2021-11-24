@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "../components/Signup";
-import type { RootState } from "./store";
+// import type { RootState } from "./store";
 
 interface UserState {
   userList: User[];
@@ -28,6 +28,7 @@ export const initialState: UserState = {
       catchPhrase: "",
       bs: "",
     },
+    dob: "",
   },
 };
 

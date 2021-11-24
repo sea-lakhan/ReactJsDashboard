@@ -8,7 +8,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { useNavigate } from "react-router";
+import { useHistory } from "react-router";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { addUserList, setUserDetails } from "../redux/userSlice";
@@ -35,7 +35,8 @@ const useStyles = makeStyles({
     flexDirection: "row",
   },
   cardStyle: {
-    minWidth: 275,
+    minWidth: 325,
+    maxWidth: 325,
     display: "flex",
     flexDirection: "column",
     backgroundColor: "#3caea3",
@@ -78,7 +79,7 @@ const useStyles = makeStyles({
 
 export const UserDashboard = () => {
   const styles = useStyles();
-  const navigation = useNavigate();
+  let navigation = useHistory();
   const user = useSelector<RootState, { userList: User[]; selectedUser: User }>((state: any) => state.user);
   const dispatch = useDispatch();
   //   const [userData, setUserData] = useState([]);
@@ -97,7 +98,7 @@ export const UserDashboard = () => {
       .delete(`http://localhost:3006/users/${id}`)
       .then((response) => {
         console.log(response.status);
-        if (response.status == 200) {
+        if (response.status === 200) {
           alert("User deleted successfully.");
         }
       })
@@ -117,7 +118,7 @@ export const UserDashboard = () => {
 
   const handleNavigation = (user: User) => {
     dispatch(setUserDetails(user));
-    navigation("/userDetails");
+    navigation.push("/userDetails");
   };
 
   return (
@@ -136,7 +137,9 @@ export const UserDashboard = () => {
                           <div className={styles.userCardStyle}>
                             <Typography className={styles.cardTitle}>{user.username}</Typography>
                             <Typography className={styles.cardTitle}>{user.name}</Typography>
-                            <Typography className={styles.cardTitle}>{user.email}</Typography>
+                            <Typography display={"block"} className={styles.cardTitle}>
+                              {user.email}
+                            </Typography>
                           </div>
                         </div>
                       </div>
