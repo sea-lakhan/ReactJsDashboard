@@ -16,12 +16,7 @@ import { resetSelectedUser } from "../redux/userSlice";
 import moment from "moment";
 
 const useStyles = makeStyles({
-  menuButton: {
-    marginRight: 2,
-  },
-  title: {
-    flexGrow: 1,
-  },
+
   rootContainer: {
     display: "flex",
     width: "100%",

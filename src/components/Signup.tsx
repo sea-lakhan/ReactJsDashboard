@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,7 +68,7 @@ export const Signup = () => {
   const userFromRedux = useSelector<RootState, User | any>((state: RootState) => state.user.selectedUser);
   const dispatch = useDispatch();
   const navigation = useHistory();
-  // const addressInputRef = useRef();
+  const addressInputRef = useRef();
   const styles = useStyle();
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -89,7 +89,7 @@ export const Signup = () => {
   const [rowSize, setRowSize] = useState<number>(1);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [dateError, setDateError] = useState<boolean>(false);
-  // const [dateState, setDateState] = useState<boolean>(false);
+  const [dateState, setDateState] = useState<boolean>(false);
 
   const handleNameChange = (name: string) => {
     setNameError(!AlphabetValidation.test(name));
