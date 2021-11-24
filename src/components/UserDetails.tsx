@@ -14,9 +14,9 @@ import { User } from "./Signup";
 import { RootState } from "../redux/store";
 import { resetSelectedUser } from "../redux/userSlice";
 import moment from "moment";
+import { theme } from "../theme/Theme";
 
 const useStyles = makeStyles({
-
   rootContainer: {
     display: "flex",
     width: "100%",
@@ -31,7 +31,8 @@ const useStyles = makeStyles({
     flexDirection: "column",
     padding: 10,
     borderRadius: 20,
-    backgroundColor: "#3caea3",
+    // backgroundColor: "#3caea3",
+    background: theme.palette.primary.main,
   },
   personalDetails: {
     display: "flex",

@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Grid, Box, makeStyles } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { theme } from "../theme/Theme";
 
 const useStyle = makeStyles({
   linkStyle: {
@@ -14,6 +15,7 @@ const useStyle = makeStyles({
     left: 0,
     right: 0,
     marginBottom: 20,
+    backgroundColor: theme.palette.primary.light,
   },
 });
 export const Footer = () => {

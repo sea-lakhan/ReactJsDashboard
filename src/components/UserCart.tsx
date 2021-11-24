@@ -7,6 +7,7 @@ import { User } from "./Signup";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { setUserDetails } from "../redux/userSlice";
+import { theme } from "../theme/Theme";
 
 const useStyles = makeStyles({
   root: {
@@ -19,7 +20,8 @@ const useStyles = makeStyles({
     maxWidth: 325,
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#3caea3",
+    // backgroundColor: "#3caea3",
+    backgroundColor: theme.palette.primary.main,
     // justifyContent: "space-between",
   },
   userCardStyle: {

@@ -7,18 +7,23 @@ import { Details } from "./components/Details";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
+import { theme } from "./theme/Theme";
+import { ThemeProvider } from "@material-ui/styles";
+
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Switch>
-        <Route exact path="/" render={() => <UserDashboard />} />
-        <Route exact path="/addUser" render={() => <Signup />} />
-        <Route exact path="/confirmDetails" render={() => <Details />} />
-        <Route exact path="/userDetails" render={() => <UserDetails />} />
-      </Switch>
-      <Footer />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <Header />
+        <Switch>
+          <Route exact path="/" render={() => <UserDashboard />} />
+          <Route exact path="/addUser" render={() => <Signup />} />
+          <Route exact path="/confirmDetails" render={() => <Details />} />
+          <Route exact path="/userDetails" render={() => <UserDetails />} />
+        </Switch>
+        <Footer />
+      </div>
+    </ThemeProvider>
   );
 }
 

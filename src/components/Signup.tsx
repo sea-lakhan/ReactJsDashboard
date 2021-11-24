@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MomentUtils from "@date-io/moment";
@@ -12,9 +12,10 @@ import { setUserDetails } from "../redux/userSlice";
 
 import { RootState } from "../redux/store";
 import { AlphabetValidation, AlphaNumericWithUnderscoreValidation, EmailValidation, PasswordValidation } from "../validation";
+import { theme } from "../theme/Theme";
 
 const useStyle = makeStyles({
-  heading: { display: "flex", color: "#3caea3" },
+  heading: { display: "flex", color: theme.palette.primary.main },
   textField: { width: "100%", backgroundColor: "#ffffff", borderRadius: 10, marginTop: 10 },
   credentialContainer: { display: "flex", width: "100%", justifyContent: "space-between", alignItems: "flex-start" },
   credentialTextFields: { width: "49%", backgroundColor: "#ffffff", borderRadius: 10, marginTop: 10 },
@@ -22,6 +23,78 @@ const useStyle = makeStyles({
   errorMessage: { color: "#ff3300" },
   dateContainer: { width: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-start", marginTop: 10 },
   clearDateIcon: { marginRight: 10 },
+  notInThisMonthDay: {
+    width: "35px",
+    height: "35px",
+    backgroundColor: theme.palette.secondary.main,
+    margin: "1px",
+    boxShadow: "none",
+    borderRadius: 20,
+    padding: "1px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#ffffff",
+  },
+  futureDay: {
+    width: "35px",
+    height: "35px",
+    backgroundColor: theme.palette.primary.light,
+    margin: "1px",
+    boxShadow: "none",
+    borderRadius: 20,
+    padding: "1px",
+    // cursor: "none",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#ffffff",
+  },
+  normalDay: {
+    width: "35px",
+    height: "35px",
+    backgroundColor: theme.palette.primary.dark,
+    margin: "1px",
+    boxShadow: "none",
+    borderRadius: 20,
+    padding: "1px",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#ffffff",
+  },
+  selectedDay: {
+    width: "35px",
+    height: "35px",
+    backgroundColor: "#ffffff",
+    margin: "1px",
+    boxShadow: "none",
+    borderRadius: 20,
+    padding: "1px",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderStyle: "solid",
+    borderWidth: "2px",
+    borderColor: theme.palette.primary.dark,
+    color: theme.palette.primary.dark,
+  },
+  today: {
+    width: "35px",
+    height: "35px",
+    backgroundColor: theme.palette.primary.dark,
+    margin: "1px",
+    boxShadow: "none",
+    borderRadius: 20,
+    padding: "1px",
+    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    color: "#ffffff",
+  },
 });
 
 export type Address = {
@@ -180,7 +253,6 @@ export const Signup = () => {
   });
 
   const handleClick = () => {
-    console.log(selectedDate, selectedDate?.toUTCString());
     if (name && email && username && password && confirmPassword && address) {
       dispatch(
         setUserDetails({
@@ -199,6 +271,56 @@ export const Signup = () => {
     } else {
       alert("Please enter all the details");
     }
+  };
+
+  const getDayView = (day: any, selectedDate: any, isInCurrentMonth: boolean) => {
+    let dateTile;
+    if (isInCurrentMonth) {
+      //conditionally return appropriate Element of date tile.
+
+      if (new Date(day) > new Date()) {
+        dateTile = (
+          <Paper className={styles.futureDay}>
+            <Grid item> {new Date(day).getDate()}</Grid>
+          </Paper>
+        );
+      } else {
+        dateTile = (
+          <Paper
+            className={
+              new Date(day).getDate() === new Date(selectedDate).getDate()
+                ? styles.selectedDay
+                : new Date(day).getDate() === new Date().getDate() && new Date(day).getMonth() === new Date().getMonth()
+                ? styles.today
+                : new Date(day) > new Date()
+                ? styles.futureDay
+                : styles.normalDay
+            }
+            onClick={() => {
+              handleDateChange(day);
+              setDateState(false);
+            }}
+          >
+            <Grid item> {new Date(day).getDate()}</Grid>
+          </Paper>
+        );
+      }
+    } else {
+      dateTile = (
+        <Paper
+          className={styles.notInThisMonthDay}
+          onClick={() => {
+            handleDateChange(day);
+            setDateState(false);
+          }}
+        >
+          <Grid item style={{ color: "lightGrey", borderRadius: 5 }}>
+            {new Date(day).getDate()}
+          </Grid>
+        </Paper>
+      );
+    }
+    return dateTile;
   };
 
   return (
@@ -315,6 +437,7 @@ export const Signup = () => {
                     </InputAdornment>
                   ),
                 }}
+                renderDay={getDayView}
                 helperText={dateError ? "Please enter valid date" : ""}
               />
             </MuiPickersUtilsProvider>
