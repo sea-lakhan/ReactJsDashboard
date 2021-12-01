@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import TextField from "@material-ui/core/TextField";
+import TextFields from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, makeStyles, Paper, Typography } from "@material-ui/core";
@@ -13,10 +13,27 @@ import { setUserDetails } from "../redux/userSlice";
 import { RootState } from "../redux/store";
 import { AlphabetValidation, AlphaNumericWithUnderscoreValidation, EmailValidation, PasswordValidation } from "../validation";
 import { theme } from "../theme/Theme";
+import { DatePicker } from "@mui/lab";
+import TextField from "@mui/material/TextField";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import DateAdapter from "@mui/lab/AdapterMoment";
+
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
+import { createTheme, createMuiTheme, ThemeProvider, styled } from "@mui/material/styles";
+import "../theme/datepickerStyles.css";
+import moment from "moment";
 
 const useStyle = makeStyles({
   heading: { display: "flex", color: theme.palette.primary.main },
-  textField: { width: "100%", backgroundColor: "#ffffff", borderRadius: 10, marginTop: 10 },
+  textField: {
+    width: "100%",
+    backgroundColor: "#ffffff",
+    borderRadius: 10,
+    marginTop: 10,
+    "& input::-webkit-clear-button, & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button": {
+      display: "none",
+    },
+  },
   credentialContainer: { display: "flex", width: "100%", justifyContent: "space-between", alignItems: "flex-start" },
   credentialTextFields: { width: "49%", backgroundColor: "#ffffff", borderRadius: 10, marginTop: 10 },
   button: { width: "100%", marginTop: 5, height: "3rem", backgroundColor: "#3caea3", color: "#fff" },
@@ -97,6 +114,83 @@ const useStyle = makeStyles({
   },
 });
 
+const datePickerTheme = createTheme({
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#ffffff",
+          color: theme.palette.primary.main,
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.primary.main,
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: `${theme.palette.primary.dark}!important`,
+          "&.Mui-selected": {
+            border: "3px solid",
+            backgroundColor: "transparent!important",
+            borderColor: `${theme.palette.primary.dark}!important`,
+            color: `${theme.palette.primary.main}!important`,
+          },
+        },
+        caption: {
+          color: theme.palette.primary.main,
+          borderBottom: "1px solid",
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          color: theme.palette.primary.main,
+        },
+      },
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          borderRadius: 20,
+          color: `${theme.palette.primary.main}!important`,
+          "&.css-1tnxc9w-MuiButtonBase-root-MuiPickersDay-root": {
+            // color:,
+          },
+          "&.Mui-selected": {
+            backgroundColor: "transparent!important",
+            border: "3px solid",
+            borderColor: `${theme.palette.primary.main}!important`,
+            borderWeight: "bold",
+          },
+          "&.css-1eyli8o-MuiButtonBase-root-MuiPickersDay-root": {
+            border: "0px solid rgba(0,0,0,0.9)",
+            borderColor: `${theme.palette.secondary.main}!important`,
+          },
+        },
+      },
+    },
+    // Mui:{
+    //   styleOverrides:{
+    //     selected:{
+
+    //     }
+    //   }
+    // }
+    // MuiPickersDay: {
+    //   styleOverrides: {
+    //     root: { color: "#ffffff", backgroundColor: "#ffffff" },
+    //   },
+    // },
+  },
+});
+
 export type Address = {
   street: string;
   suite: string;
@@ -159,11 +253,11 @@ export const Signup = () => {
   const [buttonDisableStatus, setButtonDisableStatus] = useState<boolean>(true);
   const [address, setAddress] = useState<string>("");
   const [addressError, setAddressError] = useState<boolean>(false);
-  const [rowSize, setRowSize] = useState<number>(1);
+  const [rowSize, setRowSize] = useState<number>(0);
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [dateError, setDateError] = useState<boolean>(false);
   const [dateState, setDateState] = useState<boolean>(false);
-
+  const [value, setValue] = useState<Date | null>(new Date());
   const handleNameChange = (name: string) => {
     setNameError(!AlphabetValidation.test(name));
     setName(name);
@@ -223,6 +317,7 @@ export const Signup = () => {
       handlePasswordChange(userFromRedux.password);
       handleConfirmPasswordChange(userFromRedux.password);
       handleAddressChange(userFromRedux.address.street);
+      handleDateChange(moment(userFromRedux.dob));
     }
     //  setUser(userFromRedux);
     // setUser({ ...user, website: webmailInitialValue, phone: phoneInitialValue, address: addressInitialValue, company: companyInitialValue });
@@ -273,62 +368,62 @@ export const Signup = () => {
     }
   };
 
-  const getDayView = (day: any, selectedDate: any, isInCurrentMonth: boolean) => {
-    let dateTile;
-    if (isInCurrentMonth) {
-      //conditionally return appropriate Element of date tile.
+  // const getDayView = (day: any, selectedDate: any, isInCurrentMonth: boolean) => {
+  //   let dateTile;
+  //   if (isInCurrentMonth) {
+  //     //conditionally return appropriate Element of date tile.
 
-      if (new Date(day) > new Date()) {
-        dateTile = (
-          <Paper className={styles.futureDay}>
-            <Grid item> {new Date(day).getDate()}</Grid>
-          </Paper>
-        );
-      } else {
-        dateTile = (
-          <Paper
-            className={
-              new Date(day).getDate() === new Date(selectedDate).getDate()
-                ? styles.selectedDay
-                : new Date(day).getDate() === new Date().getDate() && new Date(day).getMonth() === new Date().getMonth()
-                ? styles.today
-                : new Date(day) > new Date()
-                ? styles.futureDay
-                : styles.normalDay
-            }
-            onClick={() => {
-              handleDateChange(day);
-              setDateState(false);
-            }}
-          >
-            <Grid item> {new Date(day).getDate()}</Grid>
-          </Paper>
-        );
-      }
-    } else {
-      dateTile = (
-        <Paper
-          className={styles.notInThisMonthDay}
-          onClick={() => {
-            handleDateChange(day);
-            setDateState(false);
-          }}
-        >
-          <Grid item style={{ color: "lightGrey", borderRadius: 5 }}>
-            {new Date(day).getDate()}
-          </Grid>
-        </Paper>
-      );
-    }
-    return dateTile;
-  };
+  //     if (new Date(day) > new Date()) {
+  //       dateTile = (
+  //         <Paper className={styles.futureDay}>
+  //           <Grid item> {new Date(day).getDate()}</Grid>
+  //         </Paper>
+  //       );
+  //     } else {
+  //       dateTile = (
+  //         <Paper
+  //           className={
+  //             new Date(day).getDate() === new Date(selectedDate).getDate()
+  //               ? styles.selectedDay
+  //               : new Date(day).getDate() === new Date().getDate() && new Date(day).getMonth() === new Date().getMonth()
+  //               ? styles.today
+  //               : new Date(day) > new Date()
+  //               ? styles.futureDay
+  //               : styles.normalDay
+  //           }
+  //           onClick={() => {
+  //             handleDateChange(day);
+  //             setDateState(false);
+  //           }}
+  //         >
+  //           <Grid item> {new Date(day).getDate()}</Grid>
+  //         </Paper>
+  //       );
+  //     }
+  //   } else {
+  //     dateTile = (
+  //       <Paper
+  //         className={styles.notInThisMonthDay}
+  //         onClick={() => {
+  //           handleDateChange(day);
+  //           setDateState(false);
+  //         }}
+  //       >
+  //         <Grid item style={{ color: "lightGrey", borderRadius: 5 }}>
+  //           {new Date(day).getDate()}
+  //         </Grid>
+  //       </Paper>
+  //     );
+  //   }
+  //   return dateTile;
+  // };
 
   return (
     <div className="container">
       <div className="signupContainer">
         <div className="formfields">
           <h1 className={styles.heading}>Sign Up</h1>
-          <TextField
+          <TextFields
             error={nameError}
             value={name}
             name="name"
@@ -340,7 +435,7 @@ export const Signup = () => {
             required
             helperText={nameError ? "Please enter only alphabets" : ""}
           />
-          <TextField
+          <TextFields
             error={emailError}
             value={email}
             name="email"
@@ -352,7 +447,7 @@ export const Signup = () => {
             required
             helperText={emailError ? "Please enter valid email id" : ""}
           />
-          <TextField
+          <TextFields
             error={usernameError}
             value={username}
             disabled={credentialViewFlag}
@@ -366,7 +461,7 @@ export const Signup = () => {
             helperText={usernameError ? "Please enter only alphanumeric value" : ""}
           />
           <div className={styles.credentialContainer}>
-            <TextField
+            <TextFields
               error={passwordError}
               value={password}
               disabled={credentialViewFlag}
@@ -382,7 +477,7 @@ export const Signup = () => {
                 passwordError ? "Password must have 1 capital letter, 1 small letter, 1 digit, special character and 7 to 15 letters long" : ""
               }
             />
-            <TextField
+            <TextFields
               error={confirmPasswordError}
               value={confirmPassword}
               disabled={credentialViewFlag}
@@ -397,12 +492,12 @@ export const Signup = () => {
               helperText={confirmPasswordError ? "Confirm password and password must be same" : ""}
             />
           </div>
-          <TextField
+          <TextFields
             error={addressError}
             value={address}
-            multiline
+            multiline={!!rowSize}
             onFocus={() => setRowSize(4)}
-            onBlur={() => setRowSize(1)}
+            onBlur={() => setRowSize(0)}
             maxRows={rowSize}
             name="Address"
             className={styles.textField}
@@ -414,7 +509,7 @@ export const Signup = () => {
             helperText={addressError ? "Please enter address" : ""}
           />
           <div className={styles.dateContainer}>
-            <MuiPickersUtilsProvider utils={MomentUtils}>
+            {/* <MuiPickersUtilsProvider utils={MomentUtils}>
               <KeyboardDatePicker
                 autoOk
                 variant="inline"
@@ -426,11 +521,15 @@ export const Signup = () => {
                 onChange={handleDateChange}
                 fullWidth
                 disableFuture
+                keyboardIcon={<ClearIcon />}
                 error={dateError}
                 invalidDateMessage=""
                 InputProps={{
                   endAdornment: selectedDate != null && selectedDate != undefined && (
                     <InputAdornment position="end">
+                      <IconButton className={styles.clearDateIcon} onClick={() => handleDateChange(null)}>
+                        <ClearIcon />
+                      </IconButton>
                       <IconButton className={styles.clearDateIcon} onClick={() => handleDateChange(null)}>
                         <ClearIcon />
                       </IconButton>
@@ -440,7 +539,34 @@ export const Signup = () => {
                 renderDay={getDayView}
                 helperText={dateError ? "Please enter valid date" : ""}
               />
-            </MuiPickersUtilsProvider>
+            </MuiPickersUtilsProvider> */}
+            <ThemeProvider theme={datePickerTheme}>
+              <LocalizationProvider dateAdapter={DateAdapter}>
+                <DatePicker
+                  views={["year", "month", "day"]}
+                  label="Date of Birth"
+                  value={selectedDate}
+                  openTo="year"
+                  disableFuture
+                  toolbarPlaceholder="Select date"
+                  mask="__/__/____"
+                  onChange={(newValue) => {
+                    setSelectedDate(newValue);
+                  }}
+                  InputAdornmentProps={{ position: "start", style: { order: 2, marginLeft: 0 } }}
+                  InputProps={{
+                    endAdornment: selectedDate != null && selectedDate != undefined && (
+                      <InputAdornment position="end">
+                        <IconButton className={styles.clearDateIcon} onClick={() => handleDateChange(null)}>
+                          <ClearIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  renderInput={(params) => <TextField {...params} placeholder={"Select Date"} />}
+                />
+              </LocalizationProvider>
+            </ThemeProvider>
           </div>
           {/* <Link style={{ width:"100%", marginTop:10,height:"3rem", font}} to={{pathname:'/details'}}> */}
           <Button disabled={buttonDisableStatus} onClick={handleClick} className={styles.button} variant="contained">

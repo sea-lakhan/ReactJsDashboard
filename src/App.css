@@ -40,6 +40,7 @@
 
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
@@ -56,20 +57,6 @@ body:before {
   /* thank you Erik J - negate effect of float*/
 }
 
-.signupContainer {
-  display: flex;
-  min-height: 100%;
-  max-width: 50%;
-  min-width: 50%;
-  flex-direction: column;
-  align-self: center;
-  justify-self: center;
-  padding: 2rem;
-  justify-content: center;
-  align-items: center;
-  background-color: "#cc313d";
-}
-
 .detailsContainer {
   display: flex;
   min-height: 100%;
@@ -84,15 +71,40 @@ body:before {
 
 .formfields {
   display: flex;
-  /* width: 40rem; */
-  /* height: 30rem; */
   min-height: 100%;
-  max-width: 100%;
-  min-width: 100%;
+  flex: 1;
+  min-width: 50%;
+  max-width: 50%;
   flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: 5px;
   background-color: "#cc313d";
+}
+
+.MuiYearPicker {
+  color: "red";
+}
+
+.css-2ehmn7-MuiInputBase-root-MuiOutlinedInput-root {
+  width: 100%;
+  border-radius: 10px !important;
+  margin-top: 10px;
+}
+
+.css-1kty9di-MuiFormLabel-root-MuiInputLabel-root {
+  margin-top: 10px;
+}
+
+.css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 10px !important;
+}
+
+.css-1z7n62 {
+  display: none;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root {
+  width: 100%;
 }

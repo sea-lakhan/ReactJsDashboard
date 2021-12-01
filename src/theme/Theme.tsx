@@ -22,6 +22,7 @@ export const theme = createTheme({
       fontSize: "1rem",
     },
   },
+  overrides: {},
   shape: {
     borderRadius: 10,
   },

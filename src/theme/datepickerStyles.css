@@ -1,0 +1,21 @@
+.css-1nb02wp-MuiTypography-root.Mui-selected {
+  color: #fff;
+  background-color: #898989 !important;
+}
+
+.css-m1gykc.Mui-selected {
+  border: 3px solid;
+  border-color: #3f51b5 !important;
+  background-color: #ffffff !important;
+  color: #3f51b5 !important;
+}
+
+.css-ikrmfn-MuiTypography-root {
+  border-radius: 20;
+  border: 3px solid;
+  border-color: #3f51b5 !important;
+}
+
+.css-1q6at85-MuiInputBase-root-MuiOutlinedInput-root {
+  margin-top: 10px;
+}

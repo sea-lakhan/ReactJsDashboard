@@ -9,7 +9,7 @@ import { useHistory } from "react-router";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { useDispatch } from "react-redux";
-import { resetSelectedUser } from "../redux/userSlice";
+import { resetLoggedInState, resetSelectedUser } from "../redux/userSlice";
 
 const useStyles = makeStyles({
   menuButton: {
@@ -38,12 +38,17 @@ export const Header = () => {
 
   const handleAddUserClick = () => {
     dispatch(resetSelectedUser());
-    navigation.push("/addUser");
+    navigation.goBack();
     handleClose();
   };
 
   const handleUserDashboardClick = () => {
-    navigation.goBack();
+    navigation.push("/dashboard");
+    handleClose();
+  };
+
+  const handleLogoutClick = () => {
+    dispatch(resetLoggedInState());
     handleClose();
   };
 
@@ -74,6 +79,7 @@ export const Header = () => {
         >
           <MenuItem onClick={handleAddUserClick}>Add User</MenuItem>
           <MenuItem onClick={handleUserDashboardClick}>User Dashboard</MenuItem>
+          {/* <MenuItem onClick={handleLogoutClick}>Logout</MenuItem> */}
         </Menu>
         <Typography variant="h6" component="div" className={styles.title}>
           User Dashboard
